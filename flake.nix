@@ -7,18 +7,16 @@
 
   outputs = { self, nixpkgs }:
     let
-      # Поддерживаем стандартные x86_64 системы (можно расширить)
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
-      # 1. Экспортируем пакеты по отдельности (для nix build)
+      # Экспортируем пакеты (Nix найдет твой FernBLZ здесь)
       packages.${system} = import ./pkgs { inherit pkgs; };
 
-      # 2. Экспортируем наш NixOS-модуль
-      nixosModules.default = import ./modules {
-        # Передаем наши пакеты внутрь модуля, чтобы он их видел
-        cursorPackages = self.packages.${system};
-      };
+      # Модуль закомментирован, чтобы Nix не ругался на отсутствие папки modules
+      # nixosModules.default = import ./modules {
+      #   cursorPackages = self.packages.${system};
+      # };
     };
 }
